@@ -1,0 +1,144 @@
+namespace pc3_11
+{
+    class Program
+    {
+        public static int[] Times2(int stepen)  //Вычисление степени двойки.
+        {
+            int ostatok, n = 10000;
+            long k = 0;
+            int[] a = new int[n];
+            for (int i = 0; i < n; i++)
+            {
+                a[i] = 1;
+            }
+            a[0] = 1;
+            int aprime = 0, x = 0;
+            for (int j = 0; j < stepen; j++)
+            {
+                ostatok = 0;
+                for (int i = 1; i <= a[0]; i++)
+                {
+                    x = a[i] * 2;
+                    aprime = x % 10 + ostatok;
+                    a[i] = aprime % 10;
+                    ostatok = aprime / 10 + x / 10;
+                    k = i;
+                }
+                if (ostatok != 0) { a[k + 1] = ostatok; a[0]++; }
+
+            }
+
+            int[] prime1 = new int[a[0] + 2];
+            Array.Copy(a, prime1, a[0] + 1);
+            prime1[0] = 0;// prime[0] - колитчество цифр.
+            
+            Array.Reverse(prime1);
+            int[] prime = new int[prime1.Length - 1];
+            Array.Copy(prime1, prime, prime.Length);
+
+            Array.Reverse(prime);
+            return prime;
+        }
+        public static int[] TransformationOfLongNumber(int[] prime)
+        //Переделываем число так, чтобы было удобнее его использовать в дальнейшем.
+        {
+            int[] prime1 = new int[prime[0] + 1];
+            Array.Copy(prime, prime1, prime[0] + 1);
+
+            prime1[0] = 0;
+            Array.Reverse(prime1);
+            return prime1;
+        }
+
+        public static int[] Multiplication(int[] a, int[] b)
+        {
+            int ostatok, ostresult, rpriime, x, aprime, j = 0;
+            int[] mult = new int[a.Length];
+
+            int[] result = new int[a.Length + b.Length];
+            for (int k = 0; k < result.Length; k++)
+            { result[k] = 0; }
+            for (int k = 0; k < b.Length; k++)
+            {
+
+                ostatok = 0;
+                for (int i = 0; i < a.Length - 1; i++)
+                {
+                    x = a[i] * b[k];
+                    aprime = x % 10 + ostatok;
+                    mult[i] = aprime % 10;
+                    ostatok = aprime / 10 + x / 10;
+                    j = i;
+                }
+                if (ostatok != 0) { mult[j + 1] = ostatok; }
+                ostresult = 0;
+
+
+                for (int m = 0; m < mult.Length; m++)
+                {
+                    x = result[m + k] + mult[m];
+                    rpriime = x % 10 + ostresult;
+                    result[m + k] = rpriime % 10;
+                    ostresult = x / 10 + rpriime / 10;
+                    j = m;
+                }
+                if (ostresult != 0) result[j + 1] = ostresult;
+
+            }
+            //return result;
+            //Трансформация числа в настоящий вид(optional).
+            long notNeeded = result.Length;
+            while (result[notNeeded - 1] == 0)
+            { notNeeded--; }
+            int[] theThing = new int[notNeeded];
+            Array.Copy(result, theThing, notNeeded);
+            Array.Reverse(theThing);
+            return theThing;
+        }
+        public static int[] SumOfLongNumber(int[] a, int[] b)
+        {
+            int ost = 0, x, j = 0, prime;
+            for (int i = 0; i < b.Length; i++)
+            {
+                x = a[i] + b[i];
+                prime = x % 10 + ost;
+                a[i] = prime % 10;
+                ost = x / 10 + prime / 10;
+                j = i;
+            }
+            if (ost != 0) { a[j + 1] += ost; }
+            ost = 0;
+            return a; //Число в массиве расположено с конца в начало.
+        }
+
+            static void Main(string[] args)
+        {
+            int n = 1000000;
+            int[] a = new int[n];
+            a = Times2(19936);
+            for (int i = a.Length-2; i >=0; i--)  
+            {
+                Console.Write(a[i]);
+
+            }
+            Console.WriteLine();
+
+            int[] b = new int[n];
+            b = Times2(19937);            
+            b[0] = b[0] - 1;      // Минус 1.
+            for (int i = b.Length-2; i >=0; i--)
+            {
+                Console.Write(b[i]);
+            }
+            Console.WriteLine();
+
+            ulong m = 10000;
+            int[] result = new int[m];
+            result = Multiplication(a, b);
+            for (int i = 0; i < result.Length; i++)
+            {
+                Console.Write(result[i]);
+            }
+        }
+    }
+}
