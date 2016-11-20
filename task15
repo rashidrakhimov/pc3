@@ -1,0 +1,68 @@
+namespace ps3_15
+{
+    class Program
+    {
+        public static int[] Times2(int stepen)  //Вычисление степени двойки.
+        {
+            int ostatok,  n = 10000;
+            long k = 0;
+            int[] a = new int[n];
+            for (int i = 0; i < n; i++)
+            {
+                a[i] = -1;
+            }
+            a[0] = 1;
+            int aprime = 0, x = 0;
+            for(int j=0; j<stepen; j++)
+            {
+                ostatok = 0;
+                for (int i = 1; i <= a[0]; i++)
+                {
+                    x = a[i] * 2;
+                    aprime = x % 10 + ostatok;
+                    a[i] = aprime % 10;
+                    ostatok = aprime / 10 + x / 10;
+                    k = i;
+                }
+                if (ostatok != 0) { a[k + 1] = ostatok; a[0]++; }
+                
+            }
+            int[] prime1 = new int[a[0] + 1];
+            Array.Copy(a, prime1, a[0] + 1);
+
+            prime1[0] = -1; // prime[0] - колитчество цифр.
+            Array.Reverse(prime1);
+
+            return prime1;
+        }
+        
+
+        static void Main(string[] args)
+        {
+            int n = 10000, j = 0;
+            int[] a = new int[n];
+            a = Times2(11213);
+            for (int i = 0; i < a.Length - 1; i++)
+            {
+                Console.Write(-a[i]);
+                j = i;
+            }
+            a[j] = a[j] - 1;      // Минус 1.
+            Console.WriteLine();
+
+            bool flag = false;
+            for (int i = 0; i < a.Length - 2; i++)
+            {
+                if ((a[i] == 9) && (a[i + 1] == 9)) { flag = true; }
+            }
+            if (flag == true) Console.WriteLine("Есть 2 подряд идущие девятки");
+            else Console.WriteLine("2х подряд идущих девяток нет");
+
+
+           
+
+        }
+
+
+        }
+    }
