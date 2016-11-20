@@ -1,0 +1,159 @@
+namespace pc3_task4
+{
+    class Program
+    {
+        public static int[] EnterTheLongNumber ( int x)
+        {
+            int n = 10000;
+            int[] prime = new int[n];
+            int i = 1;  
+            prime[0] = 0;  //Количество цифр.
+            while (x > (-1))
+            {
+                prime[i] = x;
+                i++; prime[0]++;
+                Console.Write("enter next digit ");
+               x = Convert.ToInt32(Console.ReadLine());
+            }
+                return prime;
+        }
+        
+        public static int[] TransformationOfLongNumber (int[] prime) 
+            //Переделываем число так, чтобы было удобнее его использовать в дальнейшем.
+        {
+            int[] prime1 = new int[prime[0] + 1];
+            Array.Copy(prime, prime1, prime[0] + 1);
+
+            prime1[0] = 0;
+              Array.Reverse(prime1);  
+            return prime1;
+        }
+
+        public static int[] Multiplication (int[]a, int[]b)
+        {
+            int ostatok,ostresult, rpriime,x, aprime, j=0;
+            int[] mult = new int[a.Length]; 
+            
+            int[] result = new int[a.Length + b.Length];
+            for(int k = 0; k <result.Length; k++)
+            { result[k] = 0; }
+            for (int k = 0; k < b.Length; k++)
+            {
+
+                ostatok = 0;
+                for (int i = 0; i < a.Length - 1; i++)
+                {
+                    x = a[i] * b[k];
+                    aprime = x % 10 + ostatok;
+                    mult[i] = aprime % 10;
+                    ostatok = aprime / 10 + x / 10;
+                    j = i;
+                }
+                if (ostatok != 0) { mult[j + 1] = ostatok; }
+                ostresult = 0;
+                
+                
+                for(int m=0;m<mult.Length ;m++)
+                {
+                    x = result[m + k] + mult[m] ;
+                    rpriime = x % 10+ostresult;
+                    result[m+k] = rpriime % 10;
+                    ostresult = x / 10 + rpriime / 10;
+                    j = m;
+                }
+                if (ostresult != 0) result[j + 1] = ostresult;
+                
+            }
+            //return result;
+            //Трансформация числа в настоящий вид(optional).
+            long notNeeded = result.Length;
+            while (result[notNeeded-1] == 0)
+            { notNeeded--; }
+            int[] theThing = new int[notNeeded];
+            Array.Copy(result, theThing, notNeeded);
+            Array.Reverse(theThing);
+            return theThing;
+        }
+
+        static void Main(string[] args)
+        {
+            int n = 10000, x; //Если числа выходят за передел массива, увеличить n.
+            Console.Write("enter 1 digit ");
+            x = Convert.ToInt32(Console.ReadLine());          // Числитель 1 числа.
+            int[] ch1 = new int[n];
+            ch1 = EnterTheLongNumber(x);
+            Console.Write("числитель первого числа= ");
+            for (int i = 1; i <= ch1[0]; i++)
+            {
+                Console.Write(ch1[i]);
+            }
+            Console.WriteLine();
+
+            Console.Write("enter 1 digit ");
+            x = Convert.ToInt32(Console.ReadLine());               // Знаменатель 1 числа.
+            int[] zn1 = new int[n];
+            zn1 = EnterTheLongNumber(x);
+            Console.Write("знаменатель первого числа= ");
+            for (int i = 1; i <= zn1[0]; i++)
+            {
+                Console.Write(zn1[i]);
+            }
+            Console.WriteLine();
+
+            Console.Write("enter 1 digit ");
+            x = Convert.ToInt32(Console.ReadLine());          // Числитель 2 числа.
+            int[] ch2 = new int[n];
+            ch2 = EnterTheLongNumber(x);
+            Console.Write("числитель второго числа= ");
+            for (int i = 1; i <= ch2[0]; i++)
+            {
+                Console.Write(ch2[i]);
+            }
+            Console.WriteLine();
+
+            Console.Write("enter 1 digit ");
+            x = Convert.ToInt32(Console.ReadLine());               // Знаменатель 2 числа.
+            int[] zn2 = new int[n];
+            zn2 = EnterTheLongNumber(x);
+            Console.Write("знаменатель второго числа= ");
+            for (int i = 1; i <= zn2[0]; i++)
+            {
+                Console.Write(zn2[i]);
+            }
+            Console.WriteLine();
+
+            // //Умножение.
+            int[] chislitel1 = new int[n];
+            chislitel1 = TransformationOfLongNumber(ch1);
+            int[] chislitel2 = new int[n];
+            chislitel2 = TransformationOfLongNumber(ch2);
+            int[] znamenatel1 = new int[n];
+            znamenatel1 = TransformationOfLongNumber(zn1);
+            int[] znamenatel2 = new int[n];
+            znamenatel2 = TransformationOfLongNumber(zn2);
+
+            //Числитель результата умножения двух рациональных чисел.
+            int[] m = new int[n];
+            m = Multiplication(chislitel1,chislitel2);
+            for (int i = 0; i < m.Length; i++) Console.Write(m[i]);
+            Console.WriteLine();
+
+            //Знаменатель результата умножения двух рациональных чисел.
+            int[] m1 = new int[n];
+            m1 = Multiplication(znamenatel1, znamenatel2);
+            for (int i = 0; i < m1.Length; i++) Console.Write(m1[i]);
+            Console.WriteLine();
+
+            //Деление
+            //Числитель результата деления двух рациональных чисел.
+            int[] m2 = new int[n];
+            m2 = Multiplication(chislitel1, znamenatel2);
+            for (int i = 0; i < m2.Length; i++) Console.Write(m2[i]);
+            //Знаменатель результата деления двух рациональных чисел.
+            int[] m3 = new int[n];
+            m3 = Multiplication(znamenatel1, chislitel2);
+            for (int i = 0; i < m3.Length; i++) Console.Write(m3[i]);
+
+        }
+    }
+}
